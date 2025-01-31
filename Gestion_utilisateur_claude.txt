@@ -1,0 +1,94 @@
+CREATE TABLE Utilisateur(
+   id INT AUTO_INCREMENT,
+   Nom VARCHAR(200)  NOT NULL,
+   Prenom VARCHAR(200) ,
+   Date_de_Naissance DATE NOT NULL,
+   Gmail VARCHAR(200)  NOT NULL,
+   mot_de_pass VARCHAR(100)  NOT NULL,
+   etat VARCHAR(1)  NOT NULL,
+   role VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(id)
+);
+
+CREATE TABLE Token(
+   id INT AUTO_INCREMENT,
+   token VARCHAR(200) ,
+   date_debu DATETIME NOT NULL,
+   dure_de_vie INT NOT NULL,
+   id_1 INT NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_1) REFERENCES Utilisateur(id)
+);
+
+CREATE TABLE tentatives(
+   id INT AUTO_INCREMENT,
+   date_de_debu DATETIME NOT NULL,
+   Dure_suspension INT NOT NULL,
+   id_1 INT NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_1) REFERENCES Utilisateur(id)
+);
+
+CREATE TABLE cripto(
+   id INT AUTO_INCREMENT,
+   nom VARCHAR(50)  NOT NULL,
+   PRIMARY KEY(id)
+);
+
+CREATE TABLE portefeuille(
+   id INT AUTO_INCREMENT,
+   quatiter DECIMAL(12,2)  ,
+   id_1 INT NOT NULL,
+   id_2 INT NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_1) REFERENCES Utilisateur(id),
+   FOREIGN KEY(id_2) REFERENCES cripto(id)
+);
+
+CREATE TABLE fond(
+   id INT AUTO_INCREMENT,
+   fond DECIMAL(12,2)  ,
+   montant_transaction DECIMAL(12,2)   NOT NULL,
+   type_transaction VARCHAR(50)  NOT NULL,
+   etat INT NOT NULL,
+   date_transaction DATETIME NOT NULL,
+   id_1 INT NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_1) REFERENCES Utilisateur(id)
+);
+
+CREATE TABLE crypto_prices(
+   id INT AUTO_INCREMENT,
+   valeur DECIMAL(12,2)   NOT NULL,
+   daty DATETIME NOT NULL,
+   id_1 INT NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_1) REFERENCES cripto(id)
+);
+
+CREATE TABLE transaction(
+   id INT AUTO_INCREMENT,
+   transaction_type VARCHAR(50)  NOT NULL,
+   montant__cryptomonnaie DECIMAL(12,2)   NOT NULL,
+   prix_unitaire__cryptomonnaie DECIMAL(12,2)   NOT NULL,
+   total DECIMAL(12,2)   NOT NULL,
+   date_heur DATETIME NOT NULL,
+   id_1 INT NOT NULL,
+   id_2 INT NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(id_1) REFERENCES cripto(id),
+   FOREIGN KEY(id_2) REFERENCES Utilisateur(id)
+);
+
+CREATE TABLE code_pin(
+   id INT AUTO_INCREMENT,
+   code_Pin INT NOT NULL,
+   date_debu DATETIME NOT NULL,
+   dure_de_vie INT NOT NULL,
+   id_1 INT NOT NULL,
+   id_2 INT NOT NULL,
+   PRIMARY KEY(id),
+   UNIQUE(id_1),
+   FOREIGN KEY(id_1) REFERENCES Token(id),
+   FOREIGN KEY(id_2) REFERENCES Utilisateur(id)
+);
